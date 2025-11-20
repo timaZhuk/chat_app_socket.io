@@ -1,0 +1,66 @@
+import { generateToken } from "../lib/utils.js";
+import User from "../models/User.js";
+import bcrypt from "bcryptjs";
+
+//--SIGNUP controller
+export const signup = async (req, res) => {
+  const { fullName, email, password } = req.body;
+  try {
+    if (!fullName || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    //check the password length
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
+    }
+
+    //check if the email is valis: regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email))
+      return res.status(400).json({
+        message: "Invalid email address format! Enter valid email address",
+      });
+
+    //check if user is aleady exists in DB
+    const user = await User.findOne({ email });
+
+    if (user) {
+      return res
+        .status(400)
+        .json({ message: "User with this email exists! Try another one!" });
+    }
+
+    //hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    //creating new user
+    const newUser = new User({
+      fullName,
+      email,
+      password: hashedPassword,
+    });
+
+    //---
+    if (newUser) {
+      //generate the token
+      generateToken(newUser._id, res);
+      await newUser.save();
+
+      res.status(201).json({
+        _id: newUser._id,
+        fullName: newUser.fullName,
+        email: newUser.email,
+        profilePic: newUser.profilePic,
+      });
+    } else {
+      res.status(400).json({ message: "Invalid user data" });
+    }
+  } catch (error) {
+    console.log("Error in signup controller:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

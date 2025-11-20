@@ -2,6 +2,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
+import { connectDB } from "./lib/db.js";
 
 //import routers
 import authRoutes from "./routes/auth.route.js";
@@ -15,6 +16,9 @@ const app = express();
 
 //D:\1AProjects2025\NodeFull2025\NodeRepeating2026\ChatApp\backend
 const __dirname = path.resolve();
+
+//----Middleware-----
+app.use(express.json()); //get access to the fields of req.body
 
 //------endpoints-----
 
@@ -35,5 +39,6 @@ if (process.env.NODE_ENV === "production") {
 }
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  connectDB();
   console.log(__dirname);
 });
