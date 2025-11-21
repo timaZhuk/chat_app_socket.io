@@ -1,6 +1,7 @@
 //const express = require("express");
 import express from "express";
-import dotenv from "dotenv";
+
+import { ENV } from "./lib/env.js";
 import path from "path";
 import { connectDB } from "./lib/db.js";
 
@@ -9,8 +10,8 @@ import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 
 //to read from .env
-dotenv.config();
-const PORT = process.env.PORT || 3000;
+
+const PORT = ENV.PORT || 3000;
 
 const app = express();
 
@@ -29,7 +30,7 @@ app.use("/api/messages", messageRoutes);
 
 //make ready for deployment
 //serve as frontend as static folder in production
-if (process.env.NODE_ENV === "production") {
+if (ENV.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
   //all routes will be resolved by "index.html"
