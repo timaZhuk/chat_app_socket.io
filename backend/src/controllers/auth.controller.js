@@ -69,6 +69,11 @@ export const signup = async (req, res) => {
 //--LOGIN controller
 export const login = async (req, res) => {
   const { email, password } = req.body;
+
+  //check out if fields are not empty
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
   try {
     const user = await User.findOne({ email });
     //---never tell the client which one is incorrect: password or email
