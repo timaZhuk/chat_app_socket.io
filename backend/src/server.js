@@ -1,5 +1,6 @@
 //const express = require("express");
 import express from "express";
+import cookieParser from "cookie-parser";
 
 import { ENV } from "./lib/env.js";
 import path from "path";
@@ -18,8 +19,9 @@ const app = express();
 //D:\1AProjects2025\NodeFull2025\NodeRepeating2026\ChatApp\backend
 const __dirname = path.resolve();
 
-//----Middleware-----
+//------Middleware-----
 app.use(express.json()); //get access to the fields of req.body
+app.use(cookieParser()); //reading the cookies from req body
 
 //------endpoints-----
 
