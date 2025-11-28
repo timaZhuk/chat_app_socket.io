@@ -1,6 +1,7 @@
 //const express = require("express");
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import { ENV } from "./lib/env.js";
 import path from "path";
@@ -20,7 +21,9 @@ const app = express();
 const __dirname = path.resolve();
 
 //------Middleware-----
+app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(express.json()); //get access to the fields of req.body
+
 app.use(cookieParser()); //reading the cookies from req body
 
 //------endpoints-----
