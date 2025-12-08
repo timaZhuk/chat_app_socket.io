@@ -12,6 +12,7 @@ import BorderAnimatedContainer from "../components/BorderAnimatedContainer";
 import { Link } from "react-router";
 
 function SignUpPage() {
+  //form's input object
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
