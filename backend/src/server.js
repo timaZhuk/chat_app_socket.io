@@ -22,7 +22,7 @@ const __dirname = path.resolve();
 
 //------Middleware-----
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
-app.use(express.json()); //get access to the fields of req.body
+app.use(express.json({ limit: "5mb" })); //get access to the fields of req.body
 
 app.use(cookieParser()); //reading the cookies from req body
 
