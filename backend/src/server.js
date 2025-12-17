@@ -10,12 +10,15 @@ import { connectDB } from "./lib/db.js";
 //import routers
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
+import { app, server } from "./lib/socket.js";
 
 //to read from .env
 
 const PORT = ENV.PORT || 3000;
 
-const app = express();
+//delete this app
+//const app = express();
+//import from  socket.js
 
 //D:\1AProjects2025\NodeFull2025\NodeRepeating2026\ChatApp\backend
 const __dirname = path.resolve();
@@ -43,8 +46,19 @@ if (ENV.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
+
+//listen to server from socket.js
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  connectDB();
+  console.log(__dirname);
+});
+
+/* OLD VERSION
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   connectDB();
   console.log(__dirname);
 });
+
+*/
